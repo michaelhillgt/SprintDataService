@@ -1,0 +1,75 @@
+running cql scripts:
+
+create tables:
+SOURCE '/Users/michael/Documents/trackStar_concept/create_tables.cql'
+
+destroy tables:
+SOURCE '/Users/michael/Documents/trackStar_concept/destroy_tables.cql'
+
+load team member data: 
+SOURCE '/Users/michael/Documents/trackStar_concept/load_team_member_data.cql'
+
+display all data:
+SOURCE '/Users/michael/Documents/trackStar_concept/display_all_data.cql'
+
+CREATE KEYSPACE trackstar
+    WITH REPLICATION = {
+        'class': 'SimpleStrategy', 
+        'replication_factor': 1
+    };
+
+DESCRIBE KEYSPACES
+
+USE trackstar;
+
+DESCRIBE TABLES;
+
+DROP TABLE IF EXISTS table_name;
+
+# db tables:
+  # team
+  # sprint_stars [throw error if star for date already exists]
+  # ... if there is a tie award both 
+  # story_points [user, value, sprint_start_date]
+  # test_tickets
+  # assists 
+  # kudos 
+
+
+CREATE TABLE IF NOT EXISTS team_members(
+  user_id text,
+  name text,
+  team text,
+  PRIMARY KEY ( user_id )  
+  );
+
+CREATE TABLE IF NOT EXISTS sprint_stars(
+  sprint_date text,
+  user_id text,  
+  category text,
+  PRIMARY KEY ( sprint_date, user_id )
+  );
+
+CREATE TABLE IF NOT EXISTS story_points(
+  user_id text,  
+  number_of_story_points text,
+  PRIMARY KEY ( user_id )
+  ) WITH default_time_to_live = 360;
+
+CREATE TABLE IF NOT EXISTS test_tickets(
+  user_id text, 
+  number_of_test_tickets text,
+  PRIMARY KEY ( user_id ) 
+  ) WITH default_time_to_live = 360;
+
+CREATE TABLE IF NOT EXISTS assists(
+  user_id text, 
+  number_of_assists text,
+  PRIMARY KEY ( user_id ) 
+  ) WITH default_time_to_live=360;
+
+CREATE TABLE IF NOT EXISTS kudos(
+  user_id text, 
+  number_of_kudos text,
+  PRIMARY KEY ( user_id ),
+  ) WITH default_time_to_live=360;
